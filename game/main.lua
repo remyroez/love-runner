@@ -4,10 +4,12 @@ require 'sbss'
 
 local Player = require 'Player'
 local Ground = require 'Ground'
+local Background = require 'Background'
 
 local sprite
 local player
 local ground
+local background
 
 function love.load()
     sprite = sbss:new('assets/sprites.xml')
@@ -17,16 +19,21 @@ function love.load()
     player:gotoState 'run'
 
     ground = Ground(sprite, 500, player.y, width, height)
+
+    local image = love.graphics.newImage('assets/blue_desert.png')
+    background = Background(image, 100, 0, 0, width, height, height / image:getHeight())
 end
 
 function love.update(dt)
-    player:update(dt)
+    background:update(dt)
     ground:update(dt)
+    player:update(dt)
 end
 
 function love.draw()
-    player:draw()
+    background:draw()
     ground:draw()
+    player:draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
