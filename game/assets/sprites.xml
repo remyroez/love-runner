@@ -1,0 +1,10 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="alienGreen_front.png" x="226" y="309" width="105" height="150"/>
+	<SubTexture name="alienGreen_hit.png" x="114" y="260" width="110" height="151"/>
+	<SubTexture name="alienGreen_jump.png" x="226" y="154" width="108" height="153"/>
+	<SubTexture name="alienGreen_walk1.png" x="130" y="0" width="108" height="152"/>
+	<SubTexture name="alienGreen_walk2.png" x="0" y="260" width="112" height="156"/>
+	<SubTexture name="cactus.png" x="130" y="154" width="75" height="104"/>
+	<SubTexture name="sandCenter.png" x="0" y="130" width="128" height="128"/>
+	<SubTexture name="sandMid.png" x="0" y="0" width="128" height="128"/>
+</TextureAtlas>
