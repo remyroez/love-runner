@@ -6,10 +6,12 @@ local stateful = require 'stateful'
 local Player = class 'Player'
 Player:include(stateful)
 
-function Player:initialize(sprite, x, y)
+function Player:initialize(sprite, x, y, w, h)
     self.sprite = sprite
     self.x = x or 0
     self.y = y or 0
+    self.w = w or 100
+    self.h = h or 100
 end
 
 function Player:update(dt)
@@ -25,10 +27,31 @@ function Player:drawSprite(name, x, y)
     self.sprite:draw(name, x - w / 2, y - h)
 end
 
+function Player:drawCollision()
+    love.graphics.setColor(0, 0, 255)
+    love.graphics.rectangle('line', self:left(), self:top(), self:right() - self:left(), self:bottom() - self:top())
+end
+
 function Player:keypressed(...)
 end
 
 function Player:mousepressed(...)
+end
+
+function Player:left()
+    return self.x - self.w / 2
+end
+
+function Player:top()
+    return self.y - self.h
+end
+
+function Player:right()
+    return self:left() + self.w
+end
+
+function Player:bottom()
+    return self:top() + self.h
 end
 
 -- プレイヤー：走る
@@ -102,6 +125,29 @@ end
 function Jump:draw()
     -- ジャンプアニメーションをオフセット位置に描画
     self:drawSprite('alienGreen_jump.png', self.x, self.y - self.offset)
+end
+
+function Jump:top()
+    return self.y - self.h - self.offset
+end
+
+-- プレイヤー：死亡
+local Die = Player:addState 'die'
+
+function Die:enteredState()
+    self.offset = self.offset or 0
+end
+
+function Die:update(dt)
+end
+
+function Die:draw()
+    -- 描画
+    self:drawSprite('alienGreen_hit.png', self.x, self.y - self.offset)
+end
+
+function Die:top()
+    return self.y - self.h - self.offset
 end
 
 return Player
