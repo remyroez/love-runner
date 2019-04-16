@@ -20,6 +20,10 @@ function Background:initialize(image, speed, x, y, w, h, s)
     self.offset = 0
 end
 
+function Background:reset()
+    self.offset = 0
+end
+
 function Background:update(dt)
     -- スクロール処理
     self.offset = self.offset - self.speed * dt

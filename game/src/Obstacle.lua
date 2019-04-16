@@ -15,6 +15,12 @@ function Obstacle:initialize(sprite, name, speed, x, y, w, h)
     self.h = h or 100
 
     self.begin_x = self.x
+    self.begin_y = self.y
+end
+
+function Obstacle:reset()
+    self.x = self.begin_x
+    self.y = self.begin_y
 end
 
 function Obstacle:update(dt)

@@ -28,6 +28,10 @@ function Ground:initialize(sprite, speed, y, w, h)
     self.offset = 0
 end
 
+function Ground:reset()
+    self.offset = 0
+end
+
 function Ground:update(dt)
     -- スクロール処理
     self.offset = self.offset - self.speed * dt
