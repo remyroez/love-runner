@@ -12,6 +12,15 @@ function Player:initialize(sprite, x, y, w, h)
     self.y = y or 0
     self.w = w or 100
     self.h = h or 100
+
+    self.begin_x = self.x
+    self.begin_y = self.y
+end
+
+function Player:reset()
+    self.x = self.begin_x
+    self.y = self.begin_y
+    self:gotoState 'run'
 end
 
 function Player:update(dt)
