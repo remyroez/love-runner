@@ -34,7 +34,8 @@ function parse(self, fileName)
 		if s:find("<TextureAtlas") ~= nil then
 			local fileName = getAttributeData(s, "imagePath")
 
-			if love.filesystem.exists(filePath .. fileName) then
+			--if love.filesystem.exists(filePath .. fileName) then
+			if  love.filesystem.getInfo(filePath .. fileName) ~= nil then
 				self.spriteSheet = love.graphics.newImage(filePath .. fileName)
 			else
 				error("Error: " .. filePath .. fileName .. " does not exist.")

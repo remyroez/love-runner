@@ -12,7 +12,7 @@ end
 
 function love.conf(t)
 	t.identity = "runner"
-	t.version = "0.10.2"
+	t.version = "11.2"
 
 	--t.window = nil
 	t.window.title = "runner"
