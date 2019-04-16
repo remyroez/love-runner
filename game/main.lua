@@ -6,12 +6,13 @@ local Player = require 'Player'
 local Ground = require 'Ground'
 local Background = require 'Background'
 local Obstacle = require 'Obstacle'
+local Scene = require 'Scene'
 
-local sprite
 local player
 local ground
 local background
 local obstacle
+local scene
 
 local draw_collision = false
 
@@ -20,7 +21,7 @@ local function isHit(a, b)
 end
 
 function love.load()
-    sprite = sbss:new('assets/sprites.xml')
+    local sprite = sbss:new('assets/sprites.xml')
 
     local width, height = love.graphics.getDimensions()
     player = Player(sprite, width * 0.2, height * 0.8, 50, 50)
@@ -32,26 +33,21 @@ function love.load()
     background = Background(image, 100, 0, 0, width, height, height / image:getHeight())
 
     obstacle = Obstacle(sprite, 'cactus.png', 500, width + 100, height * 0.8, 50, 80)
+
+    scene = Scene(
+        player, obstacle, ground, background
+    )
+    scene:gotoState 'title'
 end
 
 function love.update(dt)
-    background:update(dt)
-    ground:update(dt)
-    obstacle:update(dt)
-    player:update(dt)
-
-    if isHit(player, obstacle) then
-        player:gotoState 'die'
-    end
+    scene:update(dt)
 end
 
 function love.draw()
     love.graphics.reset()
 
-    background:draw()
-    ground:draw()
-    obstacle:draw()
-    player:draw()
+    scene:draw()
     
     if draw_collision then
         obstacle:drawCollision()
@@ -67,10 +63,10 @@ function love.keypressed(key, scancode, isrepeat)
     elseif key == 'f1' then
         draw_collision = not draw_collision
     else
-        player:keypressed()
+        scene:keypressed(key, scancode, isrepeat)
     end
 end
 
 function love.mousepressed(...)
-    player:mousepressed()
+    scene:mousepressed(...)
 end
