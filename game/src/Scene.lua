@@ -17,10 +17,6 @@ function Scene:initialize(player, obstacle, ground, background)
     local width, height = lg.getDimensions()
     self.width = width
     self.height = height
-    self.textPos = {
-        x = width / 2,
-        y = height / 3,
-    }
     self.font = lg.newFont(64)
 end
 
@@ -65,11 +61,11 @@ function Title:draw()
 
     -- タイトル描画
     lg.setColor(love.math.random(), love.math.random(), love.math.random())
-    lg.printf("ALIEN RUNNER", self.font, 0, self.textPos.y, self.width, 'center')
+    lg.printf("ALIEN RUNNER", self.font, 0, self.height * 0.3, self.width, 'center')
 
     -- キー入力待ち描画
     lg.setColor(1.0, 0, 0.25)
-    lg.printf("PRESS ANY KEY", 0, self.textPos.y * 2, self.width, 'center')
+    lg.printf("PRESS ANY KEY", 0, self.height * 0.6, self.width, 'center')
 end
 
 function Title:keypressed(key, scancode, isrepeat)
@@ -123,8 +119,7 @@ function Game:update(dt)
 
     elseif isScored(self.player, self.obstacle) then
         -- 得点処理
-        self.obstacle.scored = true
-        self.score = self.score + 1
+        self.score = self.score + self.obstacle:score()
     end
 end
 
@@ -161,6 +156,11 @@ end
 local GameOver = Scene:addState 'gameover'
 
 function GameOver:enteredState()
+    -- ベスト得点の更新
+    self.best = self.best or self.score
+    if self.score > self.best then
+        self.best = self.score
+    end
 end
 
 function GameOver:update(dt)
@@ -174,15 +174,20 @@ function GameOver:draw()
     
     -- ゲームオーバー描画
     lg.setColor(1.0, 0, 0)
-    lg.printf("GAME OVER", self.font, 0, self.textPos.y, self.width, 'center')
+    lg.printf("GAME OVER", self.font, 0, self.height * 0.2, self.width, 'center')
     
     -- 得点描画
     lg.setColor(0, 0, 0)
-    lg.printf(self.score, self.font, 0, self.height * 0.1, self.width, 'center')
+    lg.printf("SCORE:", 0, self.height * 0.35, self.width, 'center')
+    lg.printf(self.score, self.font, 0, self.height * 0.375, self.width, 'center')
+
+    -- ベスト得点描画
+    lg.printf("BEST:", 0, self.height * 0.5, self.width, 'center')
+    lg.printf(self.best, self.font, 0, self.height * 0.525, self.width, 'center')
     
     -- キー入力待ち描画
     lg.setColor(1.0, 0, 0.25)
-    lg.printf("PRESS ANY KEY", 0, self.textPos.y * 2, self.width, 'center')
+    lg.printf("PRESS ANY KEY", 0, self.height * 0.7, self.width, 'center')
 end
 
 function GameOver:keypressed(key, scancode, isrepeat)

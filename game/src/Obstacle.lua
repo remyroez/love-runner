@@ -4,7 +4,7 @@ local class = require 'middleclass'
 -- 障害物
 local Obstacle = class 'Obstacle'
 
-function Obstacle:initialize(sprite, name, speed, x, y, w, h)
+function Obstacle:initialize(sprite, name, speed, x, y, w, h, point)
     self.sprite = sprite
     self.name = name or ""
     self.speed = speed or 100
@@ -18,11 +18,21 @@ function Obstacle:initialize(sprite, name, speed, x, y, w, h)
     self.begin_y = self.y
 
     self.scored = false
+    self.point = point or 1
 end
 
 function Obstacle:reset()
     self.x = self.begin_x
     self.y = self.begin_y
+end
+
+function Obstacle:score()
+    local point = 0
+    if not self.scored then
+        self.scored = true
+        point = self.point
+    end
+    return point
 end
 
 function Obstacle:update(dt)
