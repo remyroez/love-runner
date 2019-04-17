@@ -16,6 +16,8 @@ function Obstacle:initialize(sprite, name, speed, x, y, w, h)
 
     self.begin_x = self.x
     self.begin_y = self.y
+
+    self.scored = false
 end
 
 function Obstacle:reset()
@@ -28,6 +30,7 @@ function Obstacle:update(dt)
 
     if self.x < -self.w then
         self.x = self.begin_x
+        self.scored = false
     end
 end
 
