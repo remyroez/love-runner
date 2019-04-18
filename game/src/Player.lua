@@ -20,6 +20,7 @@ end
 function Player:reset()
     self.x = self.begin_x
     self.y = self.begin_y
+    self.offset = 0
     self:gotoState 'run'
 end
 
