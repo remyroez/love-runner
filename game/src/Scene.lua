@@ -8,11 +8,12 @@ local lg = love.graphics
 local Scene = class 'Scene'
 Scene:include(stateful)
 
-function Scene:initialize(player, obstacle, ground, background)
+function Scene:initialize(player, obstacle, ground, background, sounds)
     self.player = player
     self.obstacle = obstacle
     self.ground = ground
     self.background = background
+    self.sounds = sounds
 
     local width, height = lg.getDimensions()
     self.width = width
@@ -71,10 +72,12 @@ end
 
 function Title:keypressed(key, scancode, isrepeat)
     self:gotoState 'game'
+    self.sounds.start:play()
 end
 
 function Title:mousepressed(x, y, button, istouch, presses)
     self:gotoState 'game'
+    self.sounds.start:play()
 end
 
 -- シーン: ゲーム
@@ -98,13 +101,16 @@ local function isScored(player, obstacle)
 end
 
 function Game:enteredState()
-    --self.background:reset()
-    --self.ground:reset()
+    self.background:reset()
+    self.ground:reset()
     self.obstacle:reset()
-    --self.player:reset()
+    self.player:reset()
 
     self.draw_collision = false
     self.score = 0
+
+    -- ＢＧＭ再生
+    self.sounds.bgm:play()
 end
 
 function Game:update(dt)
@@ -121,6 +127,9 @@ function Game:update(dt)
     elseif isScored(self.player, self.obstacle) then
         -- 得点処理
         self.score = self.score + self.obstacle:score()
+
+        -- 得点ＳＥ
+        self.sounds.score:play()
     end
 end
 
@@ -162,6 +171,12 @@ function GameOver:enteredState()
     if self.score > self.best then
         self.best = self.score
     end
+    
+    -- ＢＧＭ停止
+    self.sounds.bgm:stop()
+
+    -- ゲームオーバーＳＥ
+    self.sounds.gameover:play()
 end
 
 function GameOver:update(dt)
@@ -188,15 +203,17 @@ function GameOver:draw()
     
     -- キー入力待ち描画
     lg.setColor(1.0, 0, 0.25)
-    lg.printf("PRESS ANY KEY", self.font16, 0, self.height * 0.8, self.width, 'center')
+    lg.printf("PRESS ANY KEY TO RETRY", self.font16, 0, self.height * 0.8, self.width, 'center')
 end
 
 function GameOver:keypressed(key, scancode, isrepeat)
-    self:gotoState 'title'
+    self:gotoState 'game'
+    self.sounds.start:play()
 end
 
 function GameOver:mousepressed(x, y, button, istouch, presses)
-    self:gotoState 'title'
+    self:gotoState 'game'
+    self.sounds.start:play()
 end
 
 return Scene
