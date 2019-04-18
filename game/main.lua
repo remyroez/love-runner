@@ -14,11 +14,21 @@ function love.load()
     -- スプライトの読み込み
     local sprite = sbss:new('assets/sprites.xml')
 
+    -- サウンドの読み込み
+    local sounds = {
+        bgm = love.audio.newSource('assets/Retro Comedy.ogg', 'stream'),
+        start = love.audio.newSource('assets/coin2.ogg', 'static'),
+        score = love.audio.newSource('assets/coin5.ogg', 'static'),
+        jump = love.audio.newSource('assets/jump3.ogg', 'static'),
+        gameover = love.audio.newSource('assets/gameover3.ogg', 'static')
+    }
+    sounds.bgm:setLooping(true)
+
     -- スクリーンサイズ
     local width, height = love.graphics.getDimensions()
 
     -- プレイヤー
-    local player = Player(sprite, width * 0.2, height * 0.8, 50, 50)
+    local player = Player(sprite, width * 0.2, height * 0.8, 50, 50, sounds)
     player:gotoState 'run'
 
     -- 地面
@@ -33,7 +43,7 @@ function love.load()
 
     -- シーン
     scene = Scene(
-        player, obstacle, ground, background
+        player, obstacle, ground, background, sounds
     )
     scene:gotoState 'title'
 end

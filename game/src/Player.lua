@@ -6,12 +6,14 @@ local stateful = require 'stateful'
 local Player = class 'Player'
 Player:include(stateful)
 
-function Player:initialize(sprite, x, y, w, h)
+function Player:initialize(sprite, x, y, w, h, sounds)
     self.sprite = sprite
     self.x = x or 0
     self.y = y or 0
     self.w = w or 100
     self.h = h or 100
+
+    self.jump_se = sounds.jump
 
     self.begin_x = self.x
     self.begin_y = self.y
@@ -119,6 +121,7 @@ local gravity = 3000
 function Jump:enteredState()
     self.offset = 0
     self.power = 1000
+    self.jump_se:play()
 end
 
 function Jump:update(dt)
