@@ -11,10 +11,10 @@ if love.filesystem then
 end
 
 function love.conf(t)
-	t.identity = "runner"
+	t.identity = "love-runner"
 	t.version = "11.2"
 
 	--t.window = nil
-	t.window.title = "runner"
+	t.window.title = "ALIEN RUNNER"
 
 end
