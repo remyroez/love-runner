@@ -20,6 +20,8 @@ function Scene:initialize(player, obstacle, ground, background, sounds)
     self.height = height
     self.font64 = lg.newFont('assets/Kenney Bold.ttf', 64)
     self.font16 = lg.newFont('assets/Kenney Bold.ttf', 16)
+    
+    self.draw_collision = false
 end
 
 function Scene:update(dt)
@@ -106,7 +108,6 @@ function Game:enteredState()
     self.obstacle:reset()
     self.player:reset()
 
-    self.draw_collision = false
     self.score = 0
 
     -- ＢＧＭ再生
@@ -152,7 +153,7 @@ end
 
 function Game:keypressed(key, scancode, isrepeat)
     if key == 'f1' then
-        draw_collision = not draw_collision
+        self.draw_collision = not self.draw_collision
     else
         self.player:keypressed()
     end
